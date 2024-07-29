@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login with Google</title>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id"
+        content="361297376499-ks4d1fchftp2it3r9c2irlj2dvvrq46h.apps.googleusercontent.com">
+</head>
+
+<body>
+    <h1>Login with Google</h1>
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    <script>
+        function onSignIn(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            var id_token = googleUser.getAuthResponse().id_token;
+            console.log('User logginggggggg')
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'process_login.php');
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Save user info in local storage or cookies for automatic login
+                    localStorage.setItem('user', xhr.responseText);
+                    console.log('User logged')
+                    window.location.href = 'profile.html';
+                } else {
+                    console.error('Login failed');
+                }
+            };
+            xhr.send('idtoken=' + id_token);
+        }
+    </script>
+</body>
+
+</html>
